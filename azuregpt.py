@@ -3,8 +3,8 @@ import openai
 import re
 
 # load environment variables 
-from dotenv import load_dotenv
-load_dotenv()
+# from dotenv import load_dotenv
+# load_dotenv()
 
 # system config
 openai.api_key = os.getenv("AZURE_KEY")
