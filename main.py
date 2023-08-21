@@ -9,8 +9,8 @@ import memerator
 import asyncio
 
 # load environment variables 
-from dotenv import load_dotenv
-load_dotenv()
+# from dotenv import load_dotenv
+# load_dotenv()
 
 # 测试服务器guild=discord.Object(id=1141703937225924688)
 # 所有服务器通用guild=None
