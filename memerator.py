@@ -5,7 +5,6 @@ import time
 import re
 import os
 
-
 def splice_text_image(user_id, url, top, bottom):
   timestamp = int(time.time())
   filename = str(user_id) + "-" + str(timestamp)
@@ -20,14 +19,14 @@ def splice_text_image(user_id, url, top, bottom):
   img = Image.open(req)
 
   # 定义画布及字体
-  font_size = 70
-  stroke_width = 8
+  font_size = 40
+  stroke_width = 4
   Draw = ImageDraw.Draw(img)
-  Font = ImageFont.truetype("simheibd.ttf", font_size, encoding="utf-8")
+  
 
   # 在图片上下方添加文字
-  draw_text(Draw, Font, img, top, "top", font_size, stroke_width)
-  draw_text(Draw, Font, img, bottom, "bottom", font_size, stroke_width)
+  draw_text(Draw, img, top, "top", font_size, stroke_width)
+  draw_text(Draw, img, bottom, "bottom", font_size, stroke_width)
 
   output_dir = 'output/'
   if not os.path.exists(output_dir):
@@ -38,26 +37,39 @@ def splice_text_image(user_id, url, top, bottom):
   return f"output/{filename}.jpg"
 
 
-def draw_text(Draw, Font, img, text, position, font_size, stroke_width):
-  font_size = font_size + stroke_width * 2
+def draw_text(Draw, img, text, position, font_size, stroke_width):
+  if len(text) < 20:
+    font_size += 10
+
+  Font = ImageFont.truetype("impact.ttf", font_size, encoding="utf-8")
+  
   image_width, image_height = img.size
 
-  wrapper_width = int((image_width - 50) / font_size)
-  if (check_language(text) != "zh"):
+  wrapper_width = int((image_width - 30) / font_size)
+  if (check_language(text) == "zh"):
+    Font = ImageFont.truetype("simheibd.ttf", font_size, encoding="utf-8")
     wrapper_width *= 2
+    font_size = font_size + stroke_width * 2
+  else:
+    text = text.replace(" ", "  ")  # 将所有空格替换为两个空格
+    text = text.upper()  # 将字符串转换为大写
+    wrapper_width *= 2.5
+    font_size = font_size + stroke_width * 2
+    
+  print(wrapper_width)
+
   # 自动换行
   wrapper = textwrap.TextWrapper(width=wrapper_width)
-
   lines = wrapper.wrap(text=text)
   # print(lines)
 
   # 首行绘制高度
-  draw_height = 50
+  draw_height = 20
   if position == "top":
-    draw_height = 50
+    draw_height = 20
   else:
     draw_height = int(
-      (image_height - (len(lines) * (font_size - stroke_width)) - 30))
+      (image_height - (len(lines) * (font_size - stroke_width)) - 20))
 
   # 逐行绘制文字
   for line in lines:
