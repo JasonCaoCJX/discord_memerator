@@ -5,6 +5,7 @@ import time
 import re
 import os
 
+
 def splice_text_image(user_id, url, top, bottom):
   timestamp = int(time.time())
   filename = str(user_id) + "-" + str(timestamp)
@@ -19,10 +20,9 @@ def splice_text_image(user_id, url, top, bottom):
   img = Image.open(req)
 
   # 定义画布及字体
-  font_size = 40
-  stroke_width = 4
+  font_size = 80
+  stroke_width = 6
   Draw = ImageDraw.Draw(img)
-  
 
   # 在图片上下方添加文字
   draw_text(Draw, img, top, "top", font_size, stroke_width)
@@ -42,7 +42,7 @@ def draw_text(Draw, img, text, position, font_size, stroke_width):
     font_size += 10
 
   Font = ImageFont.truetype("impact.ttf", font_size, encoding="utf-8")
-  
+
   image_width, image_height = img.size
 
   wrapper_width = int((image_width - 30) / font_size)
@@ -55,7 +55,7 @@ def draw_text(Draw, img, text, position, font_size, stroke_width):
     text = text.upper()  # 将字符串转换为大写
     wrapper_width *= 2.5
     font_size = font_size + stroke_width * 2
-    
+
   print(wrapper_width)
 
   # 自动换行
@@ -69,7 +69,7 @@ def draw_text(Draw, img, text, position, font_size, stroke_width):
     draw_height = 20
   else:
     draw_height = int(
-      (image_height - (len(lines) * (font_size - stroke_width)) - 20))
+      (image_height - (len(lines) * (font_size - stroke_width)) - 40))
 
   # 逐行绘制文字
   for line in lines:
